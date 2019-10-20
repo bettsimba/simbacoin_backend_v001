@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "simbacoin.proto";
+import "sessions.proto";
+
+option java_multiple_files = false;
+option java_package = "io.simbacoin.mlm.grpc";
+option java_outer_classname = "AfilProtos";
+
+package afil;
+
+message AfilState {
+    simbacoin.Affiliate afil = 1;
+    // Left & Right path refs stored here - left-path, right-path
+    repeated simbacoin.Referee refs = 2;
+    repeated session.Session sessions = 3;
+
+    repeated simbacoin.Task tasks = 13;
+    map<string, string> accepted_ids = 14;
+    int64 snapshot_sequence_nr = 15;
+}
+
+message AfilMasterState {
+    repeated simbacoin.Referee afil_refs = 1;
+    repeated simbacoin.Task tasks = 2;
+    int64 reg_no = 3;
+
+    int64 snapshot_sequence_nr = 10;
+}
+
+message AfilDomainEvent {
+    string id = 1;
+    google.protobuf.Any event = 2;
+    repeated simbacoin.Task tasks = 3;
+
+    string iat = 10;
+}
+
+message SessionUpserted {
+    session.Session session = 1;
+}
+
+message SessionEnded {
+    string sid = 1;
+    string iat = 10;
+}
+
+message InitAfilRegistration {
+    repeated simbacoin.Affiliate afils = 1;
+
+}
+
+message AfilRegistrationInitialized {
+   repeated simbacoin.Referee refs = 1;
+    int64 reg_no = 10;
+}
+
+message UpsertProfile {
+    simbacoin.Affiliate affiliate = 1;
+}
+
+message ProfileUpserted {
+    simbacoin.Affiliate affiliate = 1;
+    repeated simbacoin.Referee path_refs = 2;
+}
+
+message PathRefRequest {
+    simbacoin.Leg leg = 1;
+}
+
+message PathRefResponse {
+    simbacoin.Referee ref = 1;
+}
+
+message PathRefSaved {
+    repeated simbacoin.Referee refs = 1;
+}
+
+message TagAffiliate {
+    simbacoin.Referee referee = 1;
+}
+
+message AffiliateTagged {
+    simbacoin.Referee referee = 1;
+}
+
+

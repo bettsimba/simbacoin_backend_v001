@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "simbacoin.proto";
+
+option java_multiple_files = false;
+option java_package = "io.simbacoin.mlm.grpc";
+option java_outer_classname = "PathProtos";
+
+package path;
+
+message PathState {
+    simbacoin.Referee ref = 1;
+    map<string, int64> gpls = 2;
+    int64 current_gpl = 3;
+    int64 snapshot_sequence_nr = 10;
+}
+
+message PathDomainEvent {
+    string id = 1;
+    google.protobuf.Any event = 2;
+    repeated simbacoin.Task tasks = 3;
+
+    string iat = 10;
+}
+
+message PathRefs {
+    string left = 1;
+    string right = 2;
+}
+
+message InitPath {
+    simbacoin.Referee ref = 1;
+}
+
+message PathInitialized {
+    simbacoin.Referee ref = 2;
+}
+
+message GplRequest {
+    string uid = 1; // new afil
+}
+
+message GplRequested {
+    string uid = 1;
+    int64 gpl = 2;
+}
+
+message GplResponse {
+    int64 gpl = 1;
+}
+
+

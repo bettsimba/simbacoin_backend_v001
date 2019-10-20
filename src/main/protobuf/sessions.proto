@@ -1,0 +1,71 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "simbacoin.proto";
+
+option java_multiple_files = false;
+option java_package = "io.simbacoin.mlm.grpc";
+option java_outer_classname = "SessionProtos";
+
+package session;
+
+message SessionState {
+    repeated Session sessions = 1;
+    repeated SessionTask tasks = 2;
+    int64 snapshot_sequence_nr = 3;
+}
+
+message SessionDomainEvent {
+    string id = 1;
+    google.protobuf.Any event = 2;
+    repeated SessionTask tasks = 3;
+}
+
+message Session {
+    string id = 1;
+    string uid = 2;
+    string fcm_token = 3;
+    Device device = 4;
+    simbacoin.LatLng lat_lng = 5;
+
+    string iat = 8;
+    string lat = 9;
+    string eat = 10;
+}
+
+message Device {
+    string id = 1;
+    string os = 2;
+    string model = 3;
+    string type = 4;
+}
+
+message SessionTask {
+    string id = 1;
+    string sid = 2;
+    string uid = 3;
+    bool is_active = 4;
+    string iat = 5;
+}
+
+message UpsertSessions {
+    string id = 1;
+    repeated Session sessions = 2;
+    // <sid, uid>
+    map<string, string> inactive_sids = 3;
+}
+
+message SessionsUpserted {
+    repeated Session sessions = 1;
+    repeated string inactive_sids = 2;
+}
+
+message UpsertSession {
+    Session session = 1;
+}
+
+message EndSession {
+    string sid = 1;
+    string eat = 2;
+}
+

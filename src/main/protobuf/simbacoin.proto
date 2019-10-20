@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+option java_multiple_files = false;
+option java_package = "io.simbacoin.mlm.grpc";
+option java_outer_classname = "SimbaProtos";
+
+package simbacoin;
+
+enum Leg {
+    Left = 0;
+    Right = 1;
+    None = 2;
+}
+
+enum Gender {
+    MALE = 0;
+    FEMALE = 1;
+}
+
+enum State {
+    option allow_alias = true;
+    Pending = 0;
+    //Uninitialized = 0;
+    Executing = 1;
+    Frozen = 2;
+    Deactivated = 2;
+
+}
+
+enum RegStep {
+    Uninitialized = 0;
+    Initialized = 1;
+    Personal = 2;
+    Referral = 3;
+    Complete = 4;
+}
+
+message LatLng {
+    double lat = 1;
+    double lng = 2;
+}
+
+message Location {
+    string country = 1;
+    string city = 2;
+    string town = 3;
+    string street = 4;
+    string building = 5;
+    string wing = 6;
+    string floor = 7;
+    string room = 8;
+    string desc = 10;
+
+    string country_code = 15;
+}
+
+message Person {
+    string uid = 1;
+    string email = 2;
+    string name = 3;
+    string msisdn = 4;
+    string dob = 5;
+    string photo_url = 6;
+    Gender gender = 7;
+}
+
+message Affiliate {
+    string id = 1;
+    string email = 2;
+    string username = 3;
+    string name = 4;
+    string msisdn = 5;
+    string dob = 6;
+    string photo_url = 7;
+    Location location = 8;
+    Referee parent = 9;
+    int64 reg_no = 10;
+    int64 gpl = 11;
+    int64 rpl = 12;
+    int64 apl = 13;
+    RegStep reg_step = 14;
+    string iat = 15;
+}
+
+message Referee {
+    string id = 1; // unique to each affiliate
+    string uid = 2;
+    Leg leg = 3;
+    int64 apl = 4;
+    int64 gpl = 5;
+    int64 rpl = 6;
+    int64 reg_no = 7;
+    string country_code = 8;
+
+    string iat = 11;
+}
+
+message SimbaCoinCommand {
+    string id = 1;
+    string eid = 2;
+    string sid = 3;
+    google.protobuf.Any action = 4;
+
+    string iat = 10;
+}
+
+message Task {
+    string id = 1;
+    string cid = 2;
+    google.protobuf.Any action = 3;
+    State state = 4;
+
+    string eid = 9;
+    string iat = 10;
+    string eat = 11;
+}
+
+message SnapshotSaved {
+    int64 snapshot_sequence_nr = 1;
+}
+
+message Ack {
+    string id = 1;
+}
+
+message Acked {
+    string id = 1;
+    int32 resp_code = 2;
+    string desc = 3;
+}
+

@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+option java_multiple_files = false;
+option java_package = "io.simbacoin.mlm.grpc";
+option java_outer_classname = "FireProtos";
+
+package fire;
+
+enum DBAction {
+    INSERT = 0;
+    UPDATE = 1;
+    DELETE = 2;
+}
+
+message UpsertData {
+    string id = 1;
+    string collection = 2;
+    string document_id = 3;
+    DBAction action = 4;
+    google.protobuf.Any data = 5;
+    repeated string keys = 6;
+
+    bool merge = 9;
+    string iat = 10;
+    string eat = 11;
+}
+
+message UpsertBatchData {
+    repeated UpsertData data = 1;
+}
+
+message PublishFCM {
+    string id = 1;
+    string access_token = 2;
+    string device_id = 3;
+    string title = 4;
+    string body = 5;
+    map<string, string> data = 6;
+    string eat = 10;
+}
